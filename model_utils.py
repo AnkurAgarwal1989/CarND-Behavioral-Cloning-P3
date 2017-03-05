@@ -25,7 +25,8 @@ import numpy as np
 #TensorBoard to generate TensorFlow friendly logs
 
 #if resuming traning, begin_at_epoch will change, else remains 0
-def begin_training(model, training_samples, validation_samples, begin_at_epoch=0):
+def begin_training(model, training_samples, validation_samples, n_epoch=10, begin_at_epoch=0):
+    
     model.compile(loss='mean_squared_error', optimizer=Adam(lr=1e-3))
     model_checkpoint = ModelCheckpoint(filepath='model.weights.{epoch:02d}-{val_loss:.5f}.h5', verbose=1, save_best_only=True, save_weights_only=True, period=20)
     early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=5, verbose=1)
@@ -35,8 +36,7 @@ def begin_training(model, training_samples, validation_samples, begin_at_epoch=0
     batch_size= 128
     samples_per_epoch = 8000
     nb_val_samples = 2000
-    n_epoch = 100
-    
+    n_epoch = n_epoch
     fit = model.fit_generator(gen.generator(training_samples, batch_size),
                               samples_per_epoch=samples_per_epoch,
                               nb_epoch=n_epoch, verbose=2,
@@ -46,6 +46,7 @@ def begin_training(model, training_samples, validation_samples, begin_at_epoch=0
                               nb_val_samples = nb_val_samples,
                               initial_epoch = begin_at_epoch)
     print("Done Training")
+    return model
 	
 	
 ##Function to save model architecture
