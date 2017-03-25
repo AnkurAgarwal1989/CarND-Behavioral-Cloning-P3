@@ -12,6 +12,7 @@ Utility functions to initiate training, saving and loading models and weights
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, TensorBoard
 from keras.models import load_model, model_from_json, Model, Sequential
 from keras.optimizers import Adam
+from keras.utils.visualize_util import plot
 import data_generator as gen
 import json
 import os
@@ -76,6 +77,10 @@ def load_net(filename):
         model = load_model(filename)
         return model
     return None;
+
+def draw_net(model, filename):
+    plot(model, show_shapes=True, to_file=filename)
+    return
 
 #Function takes a vector and generates a 1D Gaussian Signal, with mu and sigma
 def gauss_1D(x, mu, sigma):
