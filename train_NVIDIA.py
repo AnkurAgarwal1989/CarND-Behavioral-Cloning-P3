@@ -44,13 +44,12 @@ def main():
         model = model_NVIDIA.define_NVIDIA()
         len(model.layers)
     else:
+        print("Loading Model")
         model=mutils.load_net(init_file)
         if model is None:
             print('Could not find right model. Exiting')
             exit
     
-    print(save_file)
-    print(init_file)
     samples = []
     data_dir = ['../BehavClone_training'] ## '../BehavClone_training']#, './'];
     for training_dir in data_dir:
@@ -94,6 +93,7 @@ def main():
                               initial_epoch = 0)
     print("Done Training")
     mutils.save_net(model, save_file)
+    mutils.draw_net(model, 'model.png')
 #    
     
 if __name__ == "__main__":
