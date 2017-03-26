@@ -15,12 +15,9 @@ The goals / steps of this project are as following:
 
 [//]: # "Image References"
 
-[model]: ./examples/model.png "Model Visualization"
-[lcr]: ./examples/LeftCenterRight.png "LeftRightCenter"
-[bnoise]: ./examples/BrightnessNoise.png "BrightnessNoise"
-[recoveryGIF]: ./examples/recovery.gif "Recovery"
-[smoothGIF]: ./examples/smoothTurn.gif "SmoothTurning"
-
+[model]: ./output/nvidia_e2e.png "Model Visualization"
+[lcr]: ./output/input.png "LeftRightCenter"
+[generator_images]: ./output/generator.png "BrightnessNoise"
 ## Section I
 
 ### Code Layout
@@ -57,11 +54,7 @@ The NVIDIA end-to-end learning model has been used. This decision was based on s
 
 - The data is normalized to [-1, 1] using a Keras Lambda layer.
 
-  TODO: Modelimage
-
     ![][model]
-
-  ​
 
 
 #### Reducing Overfitting:
@@ -108,19 +101,17 @@ To model the car to drive like me, I have only used data I collected myself usin
 
 #### Augmentation and pre-processsing:
 
-Since the data is images of the driving lane as seen form the car, we can use some valid assumptions and augment our data. All code for this can be found in `generator() in data_generator.py`.
+Since the data is images of the driving lane as seen form the car, we can use some valid assumptions and augment our data. All code for this can be found in `generator() in data_generator.py`. Sample inout data: !['Sample Input Images'][lcr]
 
 - Flipping the image (about vertical axis) is still a valid driving lane. We just invert the sign of the steering angle.
-  - ![][flip]
 - The left and right camera images can be thought of as the center camera when the car has steered to one side. This allows us to use the left and right camera images, by adding some compensation to the steering angle. I used a compensation of 0.2 degrees (normalized range [-1, +1]).
-  - ![][lcr]
-
-With just this augmentation, I noticed the car did not behave correctly over the bridge or near muddy patches of road. I then decided to perturb the brightness of the image randomly.
+  - With just this augmentation, I noticed the car did not behave correctly over the bridge or near muddy patches of road. I then decided to perturb the brightness of the image randomly.
 
 - The *L channel* is extracted from the HLS colorspace. A random noise is added to every pixel and the image is converted back to RGB. This has the effect of reducing dependency on color and smoothness of texture (The bridge has a different texture from the road)
-  - ![][bnoise]
 
 With these augmentations, each sample yields 12 samples.
+
+![][generator_images]
 
 All images are cropped (65 pixels from top and 25 pixels from bottom) to remove the sky and the hood of the car. Images are then resized to 64x64.
 
@@ -130,8 +121,6 @@ All images are cropped (65 pixels from top and 25 pixels from bottom) to remove 
 
 ### Results
 
-- A video clip of the car completing a lap is attached.
-- The car stays within the lanes and also recovers when moved away from center.
-  - TODO: Add video
-- The car turns very smoothly.
-  - TODO: Video of Track 1 turning
+- A video clip of the car completing a lap on Track 1 is attached.
+  - [FPV](track1_FPV.mp4)
+  - [ThirdPersonView](track1_ThirdPersonView.mp4)  ~Sped~ ~Up(5x)~ ~to~ ~reduce~ ~size~
