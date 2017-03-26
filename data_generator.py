@@ -75,7 +75,7 @@ def generator(samples, batch_size=32, drop_prob=0.4):
                 image_name = batch_sample[0].strip()
                 
                 image = cv2.imread(image_name)
-                
+
                 angle = float(batch_sample[3])
                 if angle == 0.0:
                     if np.random.random() < drop_prob:

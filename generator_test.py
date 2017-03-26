@@ -20,8 +20,8 @@ from data_generator import generator
 ##utility function to plot data
 
 def plot_image_data(train_batch_X, train_batch_y):
-    gs = gridspec.GridSpec(len(train_batch_y)//3, 3, hspace = 0.5, wspace=0)
-    plt.figure(figsize=(10, len(train_batch_y)*1.5//3))
+    gs = gridspec.GridSpec(len(train_batch_y)//3, 3, hspace = 0.5, wspace=0.3)
+    plt.figure(figsize=(5, len(train_batch_y)*1.5//3))
 
     for i in range(len(train_batch_X)):
         ax = plt.subplot(gs[i])
@@ -31,9 +31,12 @@ def plot_image_data(train_batch_X, train_batch_y):
         ax.set_yticklabels([])
         title = train_batch_y[i]
         ax.set_title(title)
+    plt.xticks([], [])
+    plt.yticks([], [])
     plt.axis('off')
     plt.suptitle("Sample Images from generator")  
     plt.show()
+    plt.savefig("generator.png")
     
     
 samples = []
@@ -56,8 +59,34 @@ for training_dir in data_dir:
         for line in reader:
             samples.append(line)
 
-train_samples, validation_samples = train_test_split(samples, test_size=0.2)
-train_generator = generator(train_samples, batch_size=5, drop_prob=0)
+train_samples, validation_samples = train_test_split(samples, test_size=0.2, random_state=1200)
+train_samples = train_samples[5:6]
+train_generator = generator(train_samples, batch_size=1, drop_prob=0)
+plt.figure(figsize=(6, 2))
+print(train_samples)
+plt.xticks([], [])
+plt.yticks([], [])
+plt.subplot(1,3,1)
+plt.imshow(cv2.cvtColor(cv2.imread(train_samples[0][1].strip()), cv2.COLOR_BGR2RGB))
+s = float(train_samples[0][3])+0.2;
+plt.title('Left: {}'.format(str(s)))
+plt.xticks([], [])
+plt.yticks([], [])
+plt.subplot(1,3,2)
+plt.imshow(cv2.cvtColor(cv2.imread(train_samples[0][0].strip()), cv2.COLOR_BGR2RGB))
+s = s-0.2;
+plt.title('Center: {}'.format(str(s)))
+plt.xticks([], [])
+plt.yticks([], [])
+plt.subplot(1,3,3)
+plt.imshow(cv2.cvtColor(cv2.imread(train_samples[0][2].strip()), cv2.COLOR_BGR2RGB))
+s = s-0.2;
+plt.title('Right: {}'.format(str(s)))
+plt.xticks([], [])
+plt.yticks([], [])
+plt.suptitle("Input to generator")  
+plt.show()
+plt.savefig("input.png")
 validation_generator = generator(validation_samples, batch_size=1)
 train_batch_X, train_batch_y = next(train_generator)
 plot_image_data(train_batch_X, train_batch_y)
