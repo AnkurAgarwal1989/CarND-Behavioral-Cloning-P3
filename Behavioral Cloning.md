@@ -123,4 +123,4 @@ All images are cropped (65 pixels from top and 25 pixels from bottom) to remove 
 
 - A video clip of the car completing a lap on Track 1 is attached.
   - [FPV](track1_FPV.mp4)
-  - [ThirdPersonView](track1_ThirdPersonView.mp4)  ~Sped~ ~Up(5x)~ ~to~ ~reduce~ ~size~
+  - [ThirdPersonView](https://youtu.be/SOp66MLVHHc)  ~Sped~ ~Up(5x)~ ~to~ ~reduce~ ~size~
